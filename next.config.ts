@@ -28,7 +28,10 @@ const nextConfig: NextConfig = {
   compress: true,
 
   images: {
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 2592000,
+    deviceSizes: [640, 828, 1080, 1200, 1920],
+    imageSizes: [64, 128, 256, 320],
   },
 
   async headers() {
@@ -45,8 +48,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Cache project images for 30 days
         source: "/projects/(.*)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
+        ],
+      },
+      {
+        source: "/blog/(.*)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
         ],

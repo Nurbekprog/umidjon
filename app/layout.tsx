@@ -10,6 +10,7 @@ import {
   BEHANCE_URL,
   LINKEDIN_URL,
   INSTAGRAM_URL,
+  TELEGRAM_URL,
   AUTHOR_EMAIL,
 } from "@/data/constants";
 import { CursorProvider } from "@/components/cursor/cursor-provider";
@@ -91,7 +92,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  category: "technology",
+  category: "art",
   verification: {
     // Add your Google Search Console verification token here when available
     // google: "your-token",
@@ -121,7 +122,7 @@ const jsonLd = {
     addressLocality: "Tashkent",
     addressCountry: "UZ",
   },
-  sameAs: [BEHANCE_URL, LINKEDIN_URL, INSTAGRAM_URL],
+  sameAs: [BEHANCE_URL, LINKEDIN_URL, INSTAGRAM_URL, TELEGRAM_URL],
   knowsAbout: [
     "Graphic Design",
     "Brand Identity",
@@ -186,7 +187,17 @@ export default function RootLayout({
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="Umidjon" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="geo.region" content="UZ-TO" />
+        <meta name="geo.placename" content="Tashkent, Uzbekistan" />
+        <meta name="geo.position" content="41.2995;69.2401" />
+        <meta name="ICBM" content="41.2995, 69.2401" />
+        <meta name="language" content="English" />
+        <meta name="rating" content="general" />
+        <link rel="apple-touch-icon" href="/avatar.jpeg" />
+        <link rel="manifest" href="/site.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
         <script
           type="application/ld+json"

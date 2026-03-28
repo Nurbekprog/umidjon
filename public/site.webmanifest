@@ -1,0 +1,20 @@
+{
+  "name": "Umidjon Haydarov | Graphic Designer",
+  "short_name": "Umidjon Design",
+  "description": "Graphic Designer specializing in brand identity, UI/UX design, and motion graphics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0c10",
+  "theme_color": "#00d4ff",
+  "orientation": "portrait-primary",
+  "categories": ["design", "portfolio", "art"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/avatar.jpeg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
