@@ -1,0 +1,296 @@
+# nurdev-portfolio — MASTER ARCHITECTURE v2.0
+# Eski + Yangi loyihalarning eng yaxshi qismlari birlashtirildi
+# Claude Code uchun doimiy reference. Har promptda: @ARCHITECTURE.txt
+
+═══════════════════════════════════════════════════════════════
+1. TO'LIQ FAYL STRUKTURASI
+═══════════════════════════════════════════════════════════════
+
+nurdev-portfolio/
+│
+├── app/                              # Next.js 15 App Router
+│   ├── (main)/
+│   │   ├── layout.tsx                # Navbar + Footer + Preloader wrapper
+│   │   ├── page.tsx                  # Home: HeroSection + TechStackSection
+│   │   ├── about/
+│   │   │   └── page.tsx              # Education, Experience, Timeline
+│   │   ├── projects/
+│   │   │   └── page.tsx              # Projects grid + filter tabs
+│   │   └── contact/
+│   │       └── page.tsx              # Forma + ijtimoiy tarmoqlar
+│   ├── layout.tsx                    # Root: Providers, Fonts, Metadata
+│   ├── globals.css                   # Tailwind, CSS Variables, font-face
+│   ├── opengraph-image.tsx           # <- ESKI loyihadan saqlandi
+│   ├── robots.ts                     # <- ESKI loyihadan saqlandi
+│   ├── sitemap.ts                    # <- ESKI loyihadan saqlandi
+│   └── loading.tsx                   # Global loader (harf-harf animatsiya)
+│
+├── config/
+│   ├── site.ts                       # SEO, meta teglar, social links
+│   └── animations.ts                 # GSAP global duration/ease konstantalari
+│
+├── providers/
+│   ├── theme-provider.tsx            # next-themes dark/light
+│   ├── smooth-scroll.tsx             # Lenis — eski use-lenis.ts asosida
+│   └── webgl-provider.tsx            # Three.js global Canvas (fixed, z-0)
+│
+├── components/
+│   │
+│   ├── 3d/                           # Three.js / R3F
+│   │   ├── HeroCanvas.tsx            # Ana sahna (Stars, Lights, OrbitControls)
+│   │   └── FloatingParticles.tsx     # <- eski particle-canvas + use-particle-bg
+│   │
+│   ├── animations/                   # Reusable animatsiya wrapperlari
+│   │   ├── TextReveal.tsx            # <- eski use-text-reveal.ts komponentga aylandi
+│   │   ├── ImageReveal.tsx           # <- eski use-image-reveal.ts komponentga aylandi
+│   │   └── FadeIn.tsx                # <- eski use-scroll-reveal.ts komponentga aylandi
+│   │
+│   ├── cursor/                       # macOS Custom Cursor tizimi
+│   │   ├── cursor-provider.tsx       # <- eski cursor-context.tsx (Context + state)
+│   │   ├── mac-cursor.tsx            # <- eski cursor.tsx (macOS SVG render)
+│   │   └── cursor-types.ts           # CursorVariant tipi
+│   │
+│   ├── layout/
+│   │   ├── navbar.tsx                # <- eski navbar.tsx (kengaytirildi)
+│   │   ├── footer.tsx                # <- eski footer.tsx
+│   │   ├── preloader.tsx             # <- eski loader.tsx (GSAP stagger bilan)
+│   │   └── sidebar.tsx               # <- eski sidebar.tsx (mobil uchun)
+│   │
+│   ├── sections/                     # Sahifa bo'limlari (FAQAT SHU PAPKA)
+│   │   ├── hero.tsx
+│   │   ├── about.tsx
+│   │   ├── experience.tsx
+│   │   ├── projects.tsx
+│   │   ├── skills.tsx
+│   │   ├── contact.tsx
+│   │   └── social.tsx
+│   │
+│   └── ui/                           # Atom darajasidagi komponentlar
+│       ├── grain-overlay.tsx         # <- eski (saqlandi)
+│       ├── magnetic-button.tsx       # <- eski (saqlandi)
+│       ├── scroll-progress.tsx       # <- eski (saqlandi)
+│       ├── signal-line.tsx           # <- eski (saqlandi)
+│       ├── split-chars.tsx           # <- eski (saqlandi)
+│       ├── spotlight-card.tsx        # <- eski (saqlandi)
+│       ├── tilt-card.tsx             # <- eski root/tilt-card.tsx (ko'chirildi)
+│       ├── error-boundary.tsx        # <- eski (saqlandi)
+│       └── project-card.tsx          # YANGI — Project tipi bilan
+│
+├── hooks/
+│   ├── use-gsap.ts                   # useGSAP wrapper, cleanup avtomatik
+│   ├── use-mouse.ts                  # {x,y} va normalized (-1..1) Three.js uchun
+│   ├── use-media-query.ts            # (query: string) => boolean
+│   ├── use-reduced-motion.ts         # <- eski hooks/ dan saqlandi
+│   └── use-magnetic.ts              # <- eski animations/shared/use-magnetic.ts
+│
+├── animations/                       # Low-level GSAP hooklar (UI emas, mantiq)
+│   ├── gsap/
+│   │   ├── gsap-init.ts              # Plaginlar ro'yxati (ScrollTrigger, TextPlugin)
+│   │   ├── use-horizontal-scroll.ts  # <- eski (saqlandi)
+│   │   ├── use-image-reveal.ts       # <- eski (saqlandi)
+│   │   ├── use-scroll-reveal.ts      # <- eski (saqlandi)
+│   │   └── use-text-reveal.ts        # <- eski (saqlandi)
+│   └── shared/
+│       └── spring-configs.ts         # <- eski (saqlandi)
+│
+├── lib/
+│   ├── utils.ts                      # <- eski (cn() — o'zgarishsiz)
+│   ├── icons.ts                      # <- eski (saqlandi)
+│   └── gsap-register.ts              # YANGI — client-side plugin import
+│
+├── data/
+│   ├── resume.ts                     # YANGI — barcha shaxsiy ma'lumotlar
+│   └── constants.ts                  # <- eski lib/constants.ts ko'chirildi
+│
+├── types/
+│   ├── index.ts                      # <- eski (kengaytirildi: NavItem, SocialLink)
+│   └── project.ts                    # YANGI — Project interfeysi
+│
+└── public/
+    ├── Cursors/                      # <- TO'LIQ SAQLANADI (macOS SVG kursorlar)
+    │   └── Cursor/
+    │       ├── Arrow.svg             # Default
+    │       ├── Pointer.svg           # Link/button ustida
+    │       ├── Grab.svg              # Card, slider ustida
+    │       ├── Grabbed.svg           # Drag paytida
+    │       ├── Text.svg              # Matn ustida
+    │       ├── ZoomIn.svg            # Rasm ustida
+    │       ├── ZoomOut.svg           # Kichraytirish
+    │       ├── Move.svg              # Draggable element
+    │       ├── Help.svg              # Tooltip kerak joylarda
+    │       └── Resize/               # Resize holatlari (to'liq)
+    ├── projects/                     # <- TO'LIQ SAQLANADI
+    │   ├── cryptofolioapp.png
+    │   ├── n-academy.png
+    │   ├── n-adminpanel.png
+    │   └── portfolio.png
+    └── avatar.jpeg                   # <- SAQLANADI
+
+═══════════════════════════════════════════════════════════════
+2. CURSOR TIZIMI — macOS STIL (ALOHIDA MUHIM)
+═══════════════════════════════════════════════════════════════
+
+ARXITEKTURA:
+  cursor-provider.tsx  ->  Global Context (variant state, setCursor fn)
+  mac-cursor.tsx       ->  SVG render + GSAP quickTo harakat
+  cursor-types.ts      ->  CursorVariant union type
+
+VARIANT -> SVG XARITASI:
+  "arrow"    -> /Cursors/Cursor/Arrow.svg      (default holatda)
+  "pointer"  -> /Cursors/Cursor/Pointer.svg    (a, button ustida)
+  "grab"     -> /Cursors/Cursor/Grab.svg       (card, slider ustida)
+  "grabbed"  -> /Cursors/Cursor/Grabbed.svg    (drag jarayonida)
+  "text"     -> /Cursors/Cursor/Text.svg       (p, h1, input ustida)
+  "zoom-in"  -> /Cursors/Cursor/ZoomIn.svg     (img ustida)
+  "move"     -> /Cursors/Cursor/Move.svg       (draggable element)
+
+ISHLASH TARTIBI:
+  1. CursorProvider app/layout.tsx da wrap qiladi
+  2. mac-cursor.tsx — GSAP quickTo bilan sichqonchaga ergashadi
+  3. Har qanday komponentda: const { setCursor } = useCursor()
+  4. Ishlatish:
+       onMouseEnter={() => setCursor("pointer")}
+       onMouseLeave={() => setCursor("arrow")}
+  5. Mobilda (useMediaQuery max-width:768px) — cursor render bo'lmaydi
+
+MAC-CURSOR.TSX TEXNIK TALABLAR:
+  - position: fixed, top:0, left:0, pointer-events:none, z-index:9999
+  - GSAP quickTo: x va y alohida (xQuick, yQuick — performance)
+  - SVG o'lchami: 32x32px default, transform-origin: top-left
+  - Silliq harakat: duration:0.15 (arrow), 0.1 (pointer), 0.2 (grab)
+  - globals.css da: * { cursor: none !important }
+  - dynamic(()=>import(), {ssr:false}) bilan yuklanadi
+
+cursor-types.ts:
+  export type CursorVariant =
+    | "arrow" | "pointer" | "grab" | "grabbed"
+    | "text" | "zoom-in" | "zoom-out" | "move" | "help"
+
+═══════════════════════════════════════════════════════════════
+3. QATIY TEXNIK QOIDALAR
+═══════════════════════════════════════════════════════════════
+
+[TYPESCRIPT]
+  - Hech qanday `any` yo'q — faqat aniq tiplar
+  - Barcha props types/ yoki cursor/cursor-types.ts dan import
+  - Har fayl yozilgach: npx tsc --noEmit
+
+[GSAP]
+  - Barcha animatsiyalar faqat useGSAP() ichida
+  - DOM faqat useRef orqali (document.querySelector MUMKIN EMAS)
+  - gsap.context() bilan cleanup — har doim
+  - gsap-register.ts faqat "use client" fayllarida import
+
+[CURSOR]
+  - globals.css: * { cursor: none !important }
+  - mac-cursor.tsx dynamic(ssr:false) bilan
+  - Mobilda cursor-provider null qaytaradi
+
+[THREE.JS]
+  - HeroCanvas faqat dynamic(ssr:false)
+  - Suspense fallback: animatsiyali div
+  - useFrame ichida yangi obyekt yaratilmaydi
+
+[KOMPONENTLAR]
+  - Har fayl maksimum 150 qator
+  - "use client" faqat zarur joylarda
+  - Barcha import @/ alias bilan
+  - components/ root darajasida hech qanday .tsx yo'q
+
+[STYLING]
+  - Spacing faqat Tailwind rem
+  - Glassmorphism: bg-white/5 backdrop-blur border border-white/10 rounded-2xl
+  - Accent: var(--accent) = #00ff88
+  - Faqat Next.js <Image /> (hech qachon <img> emas)
+
+═══════════════════════════════════════════════════════════════
+4. CSS VARIABLES (globals.css)
+═══════════════════════════════════════════════════════════════
+
+:root {
+  --accent:       #00ff88;
+  --glass:        rgba(255, 255, 255, 0.05);
+  --border-glass: rgba(255, 255, 255, 0.10);
+}
+
+* {
+  cursor: none !important;   /* macOS cursor ishlashi uchun MAJBURIY */
+}
+
+═══════════════════════════════════════════════════════════════
+5. ANIMATSIYA PATTERN (copy-paste template)
+═══════════════════════════════════════════════════════════════
+
+// Har bir section shu patternni ishlatadi:
+useGSAP(() => {
+  gsap.from(".section-title", {
+    opacity: 0, y: 50,
+    duration: 0.8, ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".section-title",
+      start: "top 85%",
+      toggleActions: "play none none reverse"
+    }
+  })
+}, [])
+
+// Reduced motion qo'llab-quvvatlash (har animatsiyada):
+const prefersReduced = useReducedMotion()
+if (prefersReduced) return
+
+═══════════════════════════════════════════════════════════════
+6. O'CHIRISH KERAK BO'LGAN ESKI FAYLLAR (Phase 1 da)
+═══════════════════════════════════════════════════════════════
+
+Quyidagilar TAKRORLANADI — o'chirilsin (sections/ versiyasi qoladi):
+
+  components/about.tsx          O'CHIR  (sections/about.tsx bor)
+  components/experience.tsx     O'CHIR  (sections/experience.tsx bor)
+  components/projects.tsx       O'CHIR  (sections/projects.tsx bor)
+  components/skills.tsx         O'CHIR  (sections/skills.tsx bor)
+  components/contact.tsx        O'CHIR  (sections/contact.tsx bor)
+  components/hero.tsx           O'CHIR  (sections/hero.tsx bor)
+  lib/constants.ts              O'CHIR  (data/constants.ts ga ko'chirildi)
+  components/sidebar-client.tsx O'CHIR  (sidebar.tsx ga birlashtirildi)
+
+═══════════════════════════════════════════════════════════════
+7. RIVOJLANTIRISH BOSQICHLARI
+═══════════════════════════════════════════════════════════════
+
+Phase 1 — Migratsiya + Setup
+  - Takrorlangan fayllarni o'chir (yuqoridagi ro'yxat)
+  - lib/constants.ts -> data/constants.ts ko'chir
+  - config/, data/resume.ts, types/project.ts, lib/gsap-register.ts yarat
+  - providers/ (theme, smooth-scroll, webgl) yarat
+
+Phase 2 — Cursor tizimi (BIRINCHI NAVBATDA QURILADI)
+  - cursor-types.ts, cursor-provider.tsx, mac-cursor.tsx
+  - globals.css: * { cursor: none !important }
+  - app/layout.tsx ga CursorProvider qo'sh
+
+Phase 3 — Global Layout
+  - navbar, footer, preloader, sidebar (eski asosida kengaytir)
+
+Phase 4 — 3D Hero + Animatsiyalar
+  - HeroCanvas, FloatingParticles
+  - sections/hero.tsx to'liq versiyasi
+  - TextReveal, FadeIn, ImageReveal komponentlari
+
+Phase 5 — Sections
+  - about, experience, projects, skills, contact, social
+  - ScrollTrigger animatsiyalar
+  - project-card.tsx, setCursor integratsiyasi
+
+Phase 6 — Polish + SEO
+  - generateMetadata barcha sahifalarda
+  - Responsivlik audit
+  - npm run build, Lighthouse > 85
+
+═══════════════════════════════════════════════════════════════
+8. BUYRUQLAR
+═══════════════════════════════════════════════════════════════
+
+npm run dev          # Development
+npx tsc --noEmit     # TypeScript tekshiruv
+npm run build        # Production build
+npm run lint         # ESLint

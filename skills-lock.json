@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "skills": {
+    "animejs": {
+      "source": "bowtiedswan/animejs-skills",
+      "sourceType": "github",
+      "computedHash": "7c9f6df3e3d1ac266dfbaf4f4675e0c34f1f8016ca9a6a446bd186ab38b532d4"
+    },
+    "browser-use": {
+      "source": "browser-use/browser-use",
+      "sourceType": "github",
+      "computedHash": "409117e97ea4689e138a2080bfa94893e31ea216fbd0220d834dbdb791ecbe0e"
+    },
+    "design-trends-2026": {
+      "source": "guia-matthieu/clawfu-skills",
+      "sourceType": "github",
+      "computedHash": "d70517d09bf191fa0e80626b896fc0991b33df1b14f11ae67f6337d61ac20e42"
+    },
+    "expo-tailwind-setup": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "d39e806942fe880347f161056729b588a3cb0f1796270eebf52633fe11cfdce1"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "gsap-animation": {
+      "source": "notedit/happy-skills",
+      "sourceType": "github",
+      "computedHash": "59b6f5dadf39f48a5fe9f459430f454ca30383bab71899ba8db44f168a449fbd"
+    },
+    "gsap-scrolltrigger": {
+      "source": "bbeierle12/skill-mcp-claude",
+      "sourceType": "github",
+      "computedHash": "fd5b97f6c8b60d5d3373d9edc07802a5bbb4da931d8502656561f6009623e960"
+    },
+    "search-engine-optimization-seo": {
+      "source": "dmend3z/tribo-skills",
+      "sourceType": "github",
+      "computedHash": "c8ba5fd052ef48d13e2895649cfb628621660d15facf3ed4a8ae229d5a9b38b8"
+    },
+    "tailwind-best-practices": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "7a94bb24f938aec684feaf5d93e862bc3c854d86d7d7d472293be793a2f4bda2"
+    },
+    "tailwindcss-advanced-layouts": {
+      "source": "josiahsiegel/claude-plugin-marketplace",
+      "sourceType": "github",
+      "computedHash": "fa08c5757b8f24df2d412543d370bc25d8c14eadeb27be4112b2354323f5889f"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "0a413bf988d06481f69bb81df2070741c3ba12dd9f1be2706d57f259c905992d"
+    }
+  }
+}

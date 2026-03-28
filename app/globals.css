@@ -1,0 +1,512 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────
+   VOID SIGNAL — Design Token System
+───────────────────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+
+  /* Backgrounds (void → elevated) */
+  --void-0:        #060608;
+  --void-1:        #0c0c10;
+  --void-2:        #111118;
+  --void-3:        #18181f;
+  --void-4:        #1e1e27;
+
+  /* Signal Accents */
+  --signal-primary:   #00d4ff;
+  --signal-secondary: #7fff8a;
+  --signal-dim:       rgba(0, 212, 255, 0.12);
+  --signal-trace:     rgba(0, 212, 255, 0.35);
+  --signal-glow:      0 0 40px rgba(0, 212, 255, 0.15);
+
+  /* Text Hierarchy */
+  --text-primary:   #f0f0f5;
+  --text-secondary: #8b8b9e;
+  --text-muted:     #4a4a5c;
+
+  /* Dark Glassmorphism (very restrained) */
+  --glass-bg:           rgba(255, 255, 255, 0.04);
+  --glass-bg-hover:     rgba(255, 255, 255, 0.07);
+  --glass-border:       rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(0, 212, 255, 0.25);
+  --glass-shadow:       0 1px 0 rgba(255, 255, 255, 0.05) inset,
+                        0 4px 24px rgba(0, 0, 0, 0.4);
+  --glass-shadow-hover: 0 1px 0 rgba(255, 255, 255, 0.06) inset,
+                        0 8px 40px rgba(0, 0, 0, 0.55),
+                        0 0 0 1px rgba(0, 212, 255, 0.12);
+
+  /* Structural */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-signal:  rgba(0, 212, 255, 0.20);
+
+  /* Radius */
+  --radius-card:  16px;
+  --radius-pill:  999px;
+  --radius-sm:    8px;
+  --radius:       16px;
+
+  /* Fluid Typography */
+  --text-display: clamp(3.5rem, 8vw, 7rem);
+  --text-hero:    clamp(2.5rem, 5vw, 4.5rem);
+  --text-h1:      clamp(2rem, 4vw, 3.5rem);
+  --text-h2:      clamp(1.5rem, 3vw, 2.25rem);
+  --text-h3:      clamp(1.125rem, 2vw, 1.5rem);
+  --text-base:    clamp(0.875rem, 1.2vw, 1rem);
+  --text-sm:      0.8125rem;
+  --text-xs:      0.6875rem;
+  --text-code:    clamp(0.75rem, 1.1vw, 0.875rem);
+
+  /* Tailwind compat */
+  --background:         var(--void-1);
+  --foreground:         var(--text-primary);
+  --card:               var(--void-2);
+  --card-foreground:    var(--text-primary);
+  --primary:            var(--signal-primary);
+  --primary-foreground: var(--void-0);
+  --secondary:          var(--void-3);
+  --secondary-foreground: var(--text-secondary);
+  --muted:              var(--void-3);
+  --muted-foreground:   var(--text-muted);
+  --accent:             var(--signal-primary);
+  --accent-foreground:  var(--void-0);
+  --border:             var(--glass-border);
+  --input:              var(--void-3);
+  --ring:               rgba(0, 212, 255, 0.4);
+  --destructive:        #ff453a;
+  --destructive-foreground: #ffffff;
+}
+
+@theme inline {
+  --font-sans:    var(--font-inter), -apple-system, system-ui, sans-serif;
+  --font-display: var(--font-syne), system-ui, sans-serif;
+  --font-mono:    var(--font-jetbrains), "Fira Code", monospace;
+
+  --color-background:            var(--background);
+  --color-foreground:            var(--foreground);
+  --color-card:                  var(--card);
+  --color-card-foreground:       var(--card-foreground);
+  --color-primary:               var(--primary);
+  --color-primary-foreground:    var(--primary-foreground);
+  --color-secondary:             var(--secondary);
+  --color-secondary-foreground:  var(--secondary-foreground);
+  --color-muted:                 var(--muted);
+  --color-muted-foreground:      var(--muted-foreground);
+  --color-accent:                var(--accent);
+  --color-accent-foreground:     var(--accent-foreground);
+  --color-border:                var(--border);
+  --color-input:                 var(--input);
+  --color-ring:                  var(--ring);
+  --color-destructive:           var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* Signal colors as Tailwind utilities */
+  --color-signal:     var(--signal-primary);
+  --color-terminal:   var(--signal-secondary);
+  --color-void-0:     var(--void-0);
+  --color-void-1:     var(--void-1);
+  --color-void-2:     var(--void-2);
+  --color-void-3:     var(--void-3);
+  --color-void-4:     var(--void-4);
+
+  --radius-sm:  var(--radius-sm);
+  --radius-md:  var(--radius-card);
+  --radius-lg:  var(--radius-card);
+  --radius-xl:  20px;
+  --radius-2xl: 24px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   BASE
+───────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    box-sizing: border-box;
+    cursor: none !important;
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis handles smooth scroll */
+    background-color: var(--void-0);
+  }
+
+  body {
+    background-color: var(--void-1);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  ::selection {
+    background: rgba(0, 212, 255, 0.18);
+    color: var(--signal-primary);
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 212, 255, 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   COMPONENTS
+───────────────────────────────────────────────────────── */
+@layer components {
+
+  /* Dark glass card */
+  .glass-card {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    backdrop-filter: blur(16px) saturate(120%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .glass-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
+  }
+
+  /* Bento card */
+  .bento-card {
+    position: relative;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  }
+  .bento-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Dock */
+  .dock-glass {
+    background: rgba(14, 14, 20, 0.85);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    backdrop-filter: blur(28px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 4px 32px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  }
+
+  /* Sidebar */
+  .sidebar-glass {
+    background: rgba(12, 12, 16, 0.92);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  /* Signal grid background (replaces dot-bg) */
+  .signal-grid {
+    background-color: var(--void-1);
+    background-image:
+      radial-gradient(circle, rgba(0, 212, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Legacy .dot-bg alias */
+  .dot-bg {
+    background-color: var(--void-1);
+    background-image:
+      radial-gradient(circle, rgba(0, 212, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Signal accent label */
+  .label-signal {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Signal border glow on hover */
+  .signal-hover {
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .signal-hover:hover {
+    border-color: var(--border-signal) !important;
+    box-shadow: 0 0 0 1px var(--border-signal), var(--signal-glow);
+  }
+
+  /* ── Spotlight Card ─────────────────────────────────── */
+  /* Glassmorphism 2.0: gradient border that tracks the mouse */
+  .spotlight-card {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--radius-card);
+    /* Gradient border using padding-box / border-box split */
+    border: 1px solid transparent;
+    background:
+      var(--glass-bg) padding-box,
+      radial-gradient(
+        320px circle at var(--sx, 50%) var(--sy, 50%),
+        rgba(var(--accent-rgb, 0, 212, 255), calc(0.45 * var(--spot-opacity, 0))),
+        rgba(255, 255, 255, 0.08) 60%
+      ) border-box;
+    transition: background 0.05s, box-shadow 0.3s;
+  }
+
+  /* Inner ambient glow — follows mouse */
+  .spotlight-card__glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      360px circle at var(--sx, 50%) var(--sy, 50%),
+      rgba(var(--accent-rgb, 0, 212, 255), calc(0.07 * var(--spot-opacity, 0))),
+      transparent 55%
+    );
+    pointer-events: none;
+    z-index: 0;
+    transition: background 0.05s;
+  }
+
+  /* Ensure content sits above glow */
+  .spotlight-card > *:not(.spotlight-card__glow) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Animated gradient text ──────────────────────────── */
+  .text-gradient-signal {
+    background: linear-gradient(
+      90deg,
+      var(--signal-primary)  0%,
+      #7fff8a               35%,
+      #f0f0f5               60%,
+      var(--signal-primary) 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-sweep 5s linear infinite;
+    will-change: background-position;
+  }
+
+  @keyframes gradient-sweep {
+    0%   { background-position: 200% center; }
+    100% { background-position: -50%  center; }
+  }
+
+  /* For SplitChars (.char-inner) inside text-gradient-signal:
+     background-attachment: fixed ensures all chars share the same
+     gradient slice, so the sweep looks continuous across the word */
+  .text-gradient-signal .char-inner {
+    background: linear-gradient(
+      90deg,
+      #00d4ff  0%,
+      #7fff8a  28%,
+      #f0f0f5  55%,
+      #00d4ff  100%
+    );
+    background-size: 280vw 100%;
+    background-attachment: fixed;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-grad-pan 5s linear infinite;
+    will-change: background-position;
+  }
+
+  @keyframes text-grad-pan {
+    0%   { background-position: 0 center; }
+    100% { background-position: -280vw center; }
+  }
+
+  /* ── GPU-hint utility (use on any animated container) ── */
+  .gpu {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+
+  /* ── Image reveal placeholder state ─────────────────── */
+  .img-unrevealed {
+    filter: grayscale(0.85) blur(3px);
+    transform: scale(1.04);
+    opacity: 0.4;
+    will-change: transform, opacity;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   LOADER
+───────────────────────────────────────────────────────── */
+.loader-panel-top,
+.loader-panel-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: var(--void-0);
+  z-index: 9999;
+}
+.loader-panel-top  { top: 0; transform-origin: top; }
+.loader-panel-bottom { bottom: 0; transform-origin: bottom; }
+
+/* ─────────────────────────────────────────────────────────
+   HORIZONTAL SCROLL SECTION
+───────────────────────────────────────────────────────── */
+.h-scroll-outer {
+  position: relative;
+  height: 400vh;
+}
+.h-scroll-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.h-scroll-track {
+  display: flex;
+  width: 400vw;
+  height: 100%;
+  will-change: transform;
+}
+.h-scroll-card {
+  width: 100vw;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────────────────
+   CURSOR — outside @layer so unlayered rules win
+   (CSS layers: unlayered > layered, even for !important)
+───────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after,
+a,
+button,
+input,
+textarea,
+select,
+label,
+[role="button"] {
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  *,
+  *::before,
+  *::after,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"] {
+    cursor: auto !important;
+  }
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f0f0f5;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 10000;
+  will-change: transform;
+}
+
+.cursor-svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  -webkit-user-select: none;
+  user-select: none;
+  display: block;
+}
+
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0, 212, 255, 0.45);
+  pointer-events: none;
+  z-index: 9998;
+  will-change: transform;
+  opacity: 0.4;
+}
+
+/* ─────────────────────────────────────────────────────────
+   CHAR SPLIT ANIMATION HELPERS
+───────────────────────────────────────────────────────── */
+.char-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.char-inner {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ─────────────────────────────────────────────────────────
+   REDUCED MOTION
+───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .char-inner,
+  .loader-panel-top,
+  .loader-panel-bottom {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
