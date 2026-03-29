@@ -5,13 +5,14 @@ export const SITE_DESCRIPTION =
   "Graphic Designer specializing in brand identity, UI/UX design, and motion graphics with a passion for creating stunning visual experiences.";
 export const SITE_URL = "https://umidjon.vercel.app";
 export const AUTHOR_NAME = "Umidjon Haydarov";
-export const AUTHOR_EMAIL = "umidjon@gmail.com";
+export const AUTHOR_EMAIL = "uhaydarov464@gmail.com";
 export const AUTHOR_PHONE = "+998 88 795 07 08";
 
-export const BEHANCE_URL = "https://behance.net/umidjonhaydarov";
+export const BEHANCE_URL = "https://www.behance.net/khaydarov_off";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/umidjon-haydarov-556659362/";
-export const TELEGRAM_URL = "https://t.me/haydarov_0ff";
-export const TELEGRAM_HANDLE = "@haydarov_0ff";
+export const TELEGRAM_URL = "https://t.me/uhaydarov_off";
+export const TELEGRAM_HANDLE = "@uhaydarov_off";
+export const PINTEREST_URL = "https://pin.it/4In6K0G7M";
 
 export const NAV_LINKS: NavLink[] = [
   { label: "About", href: "#about", id: "about" },

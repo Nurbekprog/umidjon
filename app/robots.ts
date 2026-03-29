@@ -12,10 +12,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "Googlebot",
         allow: "/",
+        disallow: ["/_next/", "/api/"],
       },
       {
         userAgent: "Googlebot-Image",
-        allow: ["/projects/", "/blog/", "/avatar.jpeg"],
+        allow: ["/projects/", "/blog/", "/avatar.jpeg", "/image_0.png", "/opengraph-image"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

@@ -264,247 +264,273 @@ function ProjectCard({
   project,
   index,
   onOpen,
-  span,
 }: {
   project: Project;
   index: number;
   onOpen: (project: Project) => void;
-  span?: "wide" | "tall" | "normal";
 }) {
   const [hovered, setHovered] = useState(false);
   const num = String(index + 1).padStart(2, "0");
 
-  const gridStyle: React.CSSProperties =
-    span === "wide"
-      ? { gridColumn: "span 2" }
-      : span === "tall"
-      ? { gridRow: "span 2" }
-      : {};
-
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        duration: 0.55,
+        delay: (index % 3) * 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
       onClick={() => onOpen(project)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        position: "relative",
-        borderRadius: "16px",
+        borderRadius: "14px",
         overflow: "hidden",
         cursor: "pointer",
-        aspectRatio: span === "wide" ? "21 / 9" : span === "tall" ? "3 / 4" : "4 / 3",
-        background: "var(--void-2)",
-        border: hovered ? "1px solid rgba(0, 212, 255, 0.35)" : "1px solid rgba(255,255,255,0.04)",
+        background: "#0b0b14",
+        border: hovered
+          ? "1px solid rgba(0,212,255,0.28)"
+          : "1px solid rgba(255,255,255,0.05)",
         boxShadow: hovered
-          ? "0 0 40px rgba(0, 212, 255, 0.08), 0 24px 48px rgba(0,0,0,0.5)"
-          : "0 8px 24px rgba(0,0,0,0.3)",
-        transition: "border-color 0.4s ease, box-shadow 0.4s ease",
-        ...gridStyle,
+          ? "0 0 40px rgba(0,212,255,0.08), 0 20px 40px rgba(0,0,0,0.55)"
+          : "0 4px 20px rgba(0,0,0,0.32)",
+        transition: "border-color 0.35s ease, box-shadow 0.35s ease",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      {/* Cover image */}
-      <Image
-        src={project.images[0]}
-        alt={project.title}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, 50vw"
-        style={{
-          transform: hovered ? "scale(1.06)" : "scale(1)",
-          transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-        }}
-      />
-
-      {/* Always-visible gradient bottom */}
+      {/* ── Image area — aspect-ratio based, always fills equally ── */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to top, rgba(6,6,8,0.85) 0%, rgba(6,6,8,0.1) 50%, transparent 100%)",
-          transition: "opacity 0.4s",
-          opacity: hovered ? 1 : 0.6,
-        }}
-      />
-
-      {/* Top-left: number + category */}
-      <div
-        style={{
-          position: "absolute",
-          top: "1rem",
-          left: "1rem",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
+          position: "relative",
+          width: "100%",
+          aspectRatio: "16 / 10",
+          background: "#0e0e1a",
+          overflow: "hidden",
+          flexShrink: 0,
         }}
       >
-        <span
+        {/* Cover image */}
+        <Image
+          src={project.images[0]}
+          alt={project.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           style={{
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: "0.625rem",
-            color: "rgba(255,255,255,0.4)",
-            letterSpacing: "0.1em",
+            objectFit: "cover",
+            objectPosition: "center top",
+            transform: hovered ? "scale(1.06)" : "scale(1)",
+            transition: "transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94)",
           }}
-        >
-          {num}
-        </span>
-        <span
-          style={{
-            padding: "0.2rem 0.625rem",
-            borderRadius: "999px",
-            background: "rgba(0, 212, 255, 0.12)",
-            border: "1px solid rgba(0, 212, 255, 0.25)",
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: "0.5625rem",
-            color: "var(--signal-primary)",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-          }}
-        >
-          {project.category}
-        </span>
-      </div>
+        />
 
-      {/* Top-right: image count */}
-      {project.images.length > 1 && (
+        {/* Idle gradient — fades bottom for title legibility */}
         <div
           style={{
             position: "absolute",
-            top: "1rem",
-            right: "1rem",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, transparent 45%, rgba(8,8,16,0.72) 100%)",
+            opacity: hovered ? 0 : 1,
+            transition: "opacity 0.35s ease",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Hover overlay — dark scrim + content */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(4,4,14,0.88)",
+            backdropFilter: "blur(3px)",
+            WebkitBackdropFilter: "blur(3px)",
+            opacity: hovered ? 1 : 0,
+            transition: "opacity 0.35s ease",
             display: "flex",
-            alignItems: "center",
-            gap: "0.3rem",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "999px",
-            background: "rgba(6,6,8,0.6)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            backdropFilter: "blur(8px)",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            padding: "1.375rem",
+            gap: "0.8rem",
           }}
         >
-          <Images size={10} color="rgba(255,255,255,0.6)" strokeWidth={2} />
+          <p
+            style={{
+              fontSize: "0.8125rem",
+              color: "rgba(255,255,255,0.87)",
+              lineHeight: 1.65,
+              margin: 0,
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {project.description}
+          </p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
+            {project.tech.slice(0, 3).map((t) => (
+              <span
+                key={t}
+                style={{
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "999px",
+                  border: "1px solid rgba(0,212,255,0.22)",
+                  background: "rgba(0,212,255,0.08)",
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: "0.5rem",
+                  color: "var(--signal-primary)",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              marginTop: "0.15rem",
+            }}
+          >
+            <ExternalLink size={10} color="var(--signal-primary)" strokeWidth={2} />
+            <span
+              style={{
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: "0.5625rem",
+                color: "var(--signal-primary)",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
+              Open Gallery
+            </span>
+          </div>
+        </div>
+
+        {/* Top-left: index + category — always on top */}
+        <div
+          style={{
+            position: "absolute",
+            top: "0.75rem",
+            left: "0.75rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            zIndex: 3,
+          }}
+        >
           <span
             style={{
               fontFamily: "var(--font-jetbrains), monospace",
               fontSize: "0.5625rem",
-              color: "rgba(255,255,255,0.6)",
-              letterSpacing: "0.06em",
+              color: "rgba(255,255,255,0.3)",
+              letterSpacing: "0.1em",
             }}
           >
-            {project.images.length}
+            {num}
+          </span>
+          <span
+            style={{
+              padding: "0.175rem 0.5rem",
+              borderRadius: "999px",
+              background: "rgba(0,212,255,0.14)",
+              border: "1px solid rgba(0,212,255,0.22)",
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: "0.5rem",
+              color: "var(--signal-primary)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            {project.category}
           </span>
         </div>
-      )}
 
-      {/* Bottom info */}
+        {/* Top-right: image count */}
+        {project.images.length > 1 && (
+          <div
+            style={{
+              position: "absolute",
+              top: "0.75rem",
+              right: "0.75rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.25rem",
+              padding: "0.2rem 0.45rem",
+              borderRadius: "999px",
+              background: "rgba(6,6,10,0.78)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              backdropFilter: "blur(8px)",
+              zIndex: 3,
+            }}
+          >
+            <Images size={9} color="rgba(255,255,255,0.55)" strokeWidth={2} />
+            <span
+              style={{
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: "0.5rem",
+                color: "rgba(255,255,255,0.55)",
+                letterSpacing: "0.06em",
+              }}
+            >
+              {project.images.length}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* ── Info bar — always visible ─────────────── */}
       <div
         style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "1.25rem",
-          transform: hovered ? "translateY(0)" : "translateY(6px)",
-          transition: "transform 0.4s ease",
+          padding: "0.8rem 1rem",
+          borderTop: "1px solid rgba(255,255,255,0.04)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "0.5rem",
+          background: hovered ? "rgba(0,212,255,0.03)" : "transparent",
+          transition: "background 0.35s",
+          flexShrink: 0,
         }}
       >
         <h3
           style={{
             fontFamily: "var(--font-syne), system-ui",
-            fontSize: "clamp(1rem, 2vw, 1.375rem)",
+            fontSize: "clamp(0.875rem, 1.3vw, 1rem)",
             fontWeight: 700,
             color: "#f0f0f5",
-            margin: "0 0 0.375rem",
+            margin: 0,
             lineHeight: 1.2,
+            flex: 1,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {project.title}
         </h3>
-
-        {/* Description */}
-        <p
-          style={{
-            fontSize: "0.75rem",
-            color: "rgba(255,255,255,0.6)",
-            margin: "0 0 0.625rem",
-            lineHeight: 1.5,
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? "translateY(0)" : "translateY(4px)",
-            transition: "opacity 0.35s ease, transform 0.35s ease",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
+        <motion.div
+          animate={{ opacity: hovered ? 1 : 0.2, x: hovered ? 0 : -3 }}
+          transition={{ duration: 0.28 }}
+          style={{ flexShrink: 0 }}
         >
-          {project.description}
-        </p>
-
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.375rem",
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? "translateY(0)" : "translateY(4px)",
-            transition: "opacity 0.35s ease 0.05s, transform 0.35s ease 0.05s",
-          }}
-        >
-          {project.tech.map((t) => (
-            <span
-              key={t}
-              style={{
-                padding: "0.2rem 0.5rem",
-                borderRadius: "999px",
-                border: "1px solid rgba(255,255,255,0.15)",
-                background: "rgba(255,255,255,0.07)",
-                fontFamily: "var(--font-jetbrains), monospace",
-                fontSize: "0.5625rem",
-                color: "rgba(255,255,255,0.7)",
-                letterSpacing: "0.04em",
-              }}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-
-        {/* View gallery hint */}
-        <div
-          style={{
-            marginTop: "0.75rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.375rem",
-            opacity: hovered ? 1 : 0,
-            transition: "opacity 0.35s ease 0.05s",
-          }}
-        >
-          <ExternalLink size={11} color="var(--signal-primary)" strokeWidth={2} />
-          <span
-            style={{
-              fontFamily: "var(--font-jetbrains), monospace",
-              fontSize: "0.625rem",
-              color: "var(--signal-primary)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}
-          >
-            View Gallery
-          </span>
-        </div>
+          <ExternalLink size={12} color="var(--signal-primary)" strokeWidth={2} />
+        </motion.div>
       </div>
     </motion.article>
   );
 }
 
 // ── Main Section ────────────────────────────────────────────────────────────
-
-const SPANS: Array<"wide" | "tall" | "normal"> = [
-  "wide", "normal", "normal", "normal", "wide", "normal",
-];
 
 export function Projects() {
   const containerRef = useScrollReveal<HTMLElement>({ y: 30, start: "top 85%" });
@@ -548,7 +574,7 @@ export function Projects() {
           </span>
         </div>
 
-        {/* Creative heading */}
+        {/* Heading */}
         <div style={{ marginBottom: "2.5rem" }}>
           <h2
             style={{
@@ -565,7 +591,7 @@ export function Projects() {
             <br />
             <span
               style={{
-                WebkitTextStroke: "1px rgba(0, 212, 255, 0.6)",
+                WebkitTextStroke: "1px rgba(0,212,255,0.6)",
                 WebkitTextFillColor: "transparent",
               }}
             >
@@ -575,32 +601,24 @@ export function Projects() {
           <p
             style={{
               marginTop: "1rem",
-              fontSize: "0.875rem",
+              fontSize: "0.8125rem",
               color: "var(--text-muted)",
               fontFamily: "var(--font-jetbrains), monospace",
               letterSpacing: "0.04em",
             }}
           >
-            Click any project to view the full gallery
+            Click any project to open the gallery
           </p>
         </div>
 
-        {/* Masonry Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1rem",
-          }}
-          className="projects-grid"
-        >
+        {/* ── Grid: 3-col desktop, 2-col tablet, 1-col mobile ── */}
+        <div className="proj-grid">
           {PROJECTS.map((project, i) => (
             <ProjectCard
               key={project.id}
               project={project}
               index={i}
               onOpen={setModal}
-              span={SPANS[i] ?? "normal"}
             />
           ))}
         </div>
@@ -611,21 +629,17 @@ export function Projects() {
         />
       </section>
 
-      {/* Mobile grid fix */}
       <style>{`
-        @media (max-width: 768px) {
-          .projects-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .projects-grid > * {
-            grid-column: span 1 !important;
-            grid-row: span 1 !important;
-          }
+        .proj-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.875rem;
         }
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .projects-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
+        @media (max-width: 1024px) {
+          .proj-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 580px) {
+          .proj-grid { grid-template-columns: 1fr; gap: 0.75rem; }
         }
       `}</style>
 

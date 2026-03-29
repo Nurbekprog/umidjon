@@ -1,10 +1,12 @@
-import { AUTHOR_NAME, BEHANCE_URL, LINKEDIN_URL, AUTHOR_EMAIL, INSTAGRAM_URL } from "@/data/constants";
+import { AUTHOR_NAME, BEHANCE_URL, LINKEDIN_URL, AUTHOR_EMAIL, INSTAGRAM_URL, PINTEREST_URL, TELEGRAM_URL } from "@/data/constants";
 
 const SOCIAL_LINKS = [
   { label: "Behance",   href: BEHANCE_URL },
-  { label: "LinkedIn", href: LINKEDIN_URL },
+  { label: "LinkedIn",  href: LINKEDIN_URL },
   { label: "Instagram", href: INSTAGRAM_URL },
-  { label: "Email",    href: `mailto:${AUTHOR_EMAIL}` },
+  { label: "Pinterest", href: PINTEREST_URL },
+  { label: "Telegram",  href: TELEGRAM_URL },
+  { label: "Email",     href: `mailto:${AUTHOR_EMAIL}` },
 ];
 
 export function Footer() {

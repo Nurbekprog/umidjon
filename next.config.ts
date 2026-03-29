@@ -27,11 +27,18 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  experimental: {
+    // Tree-shake lucide-react and framer-motion — significantly reduces bundle
+    optimizePackageImports: ["lucide-react", "framer-motion", "gsap"],
+  },
+
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2592000,
     deviceSizes: [640, 828, 1080, 1200, 1920],
     imageSizes: [64, 128, 256, 320],
+    dangerouslyAllowSVG: false,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   async headers() {
