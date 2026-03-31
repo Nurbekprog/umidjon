@@ -9,7 +9,7 @@ const jobs = [
     role: "Graphic Designer",
     company: "Freelance",
     period: "2025 – Present",
-    link: "https://behance.net/umidjonhaydarov",
+    link: "https://www.behance.net/khaydarov_off",
     status: "Active",
     highlights: [
       "Brand identity systems for 10+ local and international clients",
@@ -28,7 +28,7 @@ const jobs = [
     role: "Visual Designer",
     company: "Personal Projects",
     period: "2024",
-    link: "https://behance.net/umidjonhaydarov",
+    link: "https://www.behance.net/khaydarov_off",
     status: "Shipped",
     highlights: [
       "Dark mode design system — glass layers, deep tones, sharp contrast",

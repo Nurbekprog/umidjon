@@ -2,9 +2,9 @@ export const resume = {
   name: "Umidjon Haydarov",
   title: "Graphic Designer & Visual Artist",
   location: "Tashkent, Uzbekistan",
-  email: "umidjon@gmail.com",
+  email: "uhaydarov464@gmail.com",
   phone: "+998 88 795 07 08",
-  behance: "https://behance.net/umidjonhaydarov",
+  behance: "https://www.behance.net/khaydarov_off",
   linkedin: "https://www.linkedin.com/in/umidjon-haydarov-556659362/",
 
   summary:
